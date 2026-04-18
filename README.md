@@ -1,6 +1,6 @@
 # spec-tree
 
-トレーサビリティ管理システム（Traceability Management System）。仕様書は [`traceability_system_spec_v1.md`](./traceability_system_spec_v1.md) を参照。
+トレーサビリティ管理システム（Traceability Management System）。システム仕様書は [`docs/`](./docs/README.md) に章ごとに英語で配置している（旧 `traceability_system_spec_v1.md` を翻訳・分割）。
 
 ## 構成
 
@@ -12,7 +12,8 @@ spec-tree/
 │   ├── backend/   # Node.js + TypeScript の REST API サーバ
 │   └── web/       # React + Vite のフロントエンド SPA
 ├── prompts/       # CLI プロンプトテンプレ (extract/link/review/impact)
-├── docs/          # 入力ドキュメント (要求・仕様・テスト)
+├── input/         # 入力ドキュメント (要求・仕様・テスト)
+├── docs/          # システム仕様書 (English, 章ごとに分割)
 ├── output/        # CLI 出力 JSON
 └── data/          # SQLite データベース (trace.db)
 ```
