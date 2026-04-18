@@ -6,12 +6,12 @@
 
 ## 6.1 Screen catalog
 
-| Screen | Primary users | Function |
-| :----- | :------------ | :------- |
-| **Traceability Map** | PM, QA | Tree view of Requirement → Specification → Test; search, filter, highlight AI findings. |
-| **Node Detail** | PM, QA | All fields of a node, related-node list, change-history timeline. |
-| **Impact View** | PM | Result of specification-change analysis; color coding of direct vs. chained impact; accept / reject new-node proposals. |
-| **JSON Import** | PM, QA | Ingest CLI JSON: validate, preview diff, approve. |
+| Screen               | Primary users | Function                                                                                                                |
+| :------------------- | :------------ | :---------------------------------------------------------------------------------------------------------------------- |
+| **Traceability Map** | PM, QA        | Tree view of Requirement → Specification → Test; search, filter, highlight AI findings.                                 |
+| **Node Detail**      | PM, QA        | All fields of a node, related-node list, change-history timeline.                                                       |
+| **Impact View**      | PM            | Result of specification-change analysis; color coding of direct vs. chained impact; accept / reject new-node proposals. |
+| **JSON Import**      | PM, QA        | Ingest CLI JSON: validate, preview diff, approve.                                                                       |
 
 ## 6.2 JSON-Import screen
 
@@ -53,13 +53,32 @@ Shows the result of a specification-change analysis. Direct impact is red, chain
 
 ## 6.4 REST API
 
-| Endpoint | Method | Function |
-| :------- | :----- | :------- |
-| **/api/import** | POST | Ingest a JSON file (validate + store). |
-| **/api/export** | GET | Export a DB snapshot. |
-| **/api/nodes** | GET | List nodes (supports filter, search). |
-| **/api/nodes/:id** | GET/PUT | Get / update node detail. |
-| **/api/edges** | GET | List edges. |
-| **/api/edges/:id** | PUT | Update edge status (approval, etc.). |
-| **/api/impact/:cr_id** | GET | Fetch impact-analysis result (includes chained computation). |
-| **/api/reviews** | GET | List unresolved AI findings. |
+| Endpoint               | Method  | Function                                                     |
+| :--------------------- | :------ | :----------------------------------------------------------- |
+| **/api/import**        | POST    | Ingest a JSON file (validate + store).                       |
+| **/api/export**        | GET     | Export a DB snapshot.                                        |
+| **/api/nodes**         | GET     | List nodes (supports filter, search).                        |
+| **/api/nodes/:id**     | GET/PUT | Get / update node detail.                                    |
+| **/api/edges**         | GET     | List edges.                                                  |
+| **/api/edges/:id**     | PUT     | Update edge status (approval, etc.).                         |
+| **/api/impact/:cr_id** | GET     | Fetch impact-analysis result (includes chained computation). |
+| **/api/reviews**       | GET     | List unresolved AI findings.                                 |
+
+### 6.4.1 `GET /api/reviews`
+
+Returns rows from the [`reviews` table](./02-data-model.md#27-reviews-table). Default filter is `status=unresolved`; pass `?status=all` to include resolved/rejected. Each element:
+
+```json
+{
+  "id": 42,
+  "source_type": "extract",
+  "node_id": "SPEC-003",
+  "edge_id": null,
+  "cr_id": null,
+  "severity": "warning",
+  "category": "ambiguous",
+  "message": "Description could be interpreted two ways.",
+  "status": "unresolved",
+  "created_at": "2026-04-18T09:12:34.567Z"
+}
+```

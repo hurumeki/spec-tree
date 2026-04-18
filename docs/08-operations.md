@@ -6,12 +6,12 @@
 
 ## 8.1 Status management
 
-| Status | Description | Transition trigger |
-| :----- | :---------- | :----------------- |
-| **draft** | Just produced by AI, not yet reviewed. | Set automatically on import. |
-| **reviewed** | Reviewed but not yet approved. | Reviewer marks it after inspection. |
-| **approved** | Approved and finalized. | Approver confirms. |
-| **deprecated** | Retired (logical deletion). | Set when a requirement is removed or a spec is retired. |
+| Status         | Description                            | Transition trigger                                      |
+| :------------- | :------------------------------------- | :------------------------------------------------------ |
+| **draft**      | Just produced by AI, not yet reviewed. | Set automatically on import.                            |
+| **reviewed**   | Reviewed but not yet approved.         | Reviewer marks it after inspection.                     |
+| **approved**   | Approved and finalized.                | Approver confirms.                                      |
+| **deprecated** | Retired (logical deletion).            | Set when a requirement is removed or a spec is retired. |
 
 ## 8.2 Versioning rules
 
@@ -24,7 +24,7 @@
 
 - AI output is never promoted to `approved` without human review.
 - Edges with `confidence < 0.7` are highlighted yellow in the UI and prioritized for review.
-- For each AI finding (`reviews`), the reviewer must choose **resolved** or **rejected**.
+- For each AI finding (`reviews`), the reviewer must choose **resolved** or **rejected**; these values are persisted in [`reviews.status`](./02-data-model.md#27-reviews-table).
 - For `suggested_new_nodes` from impact analysis, the human decides **accept** or **reject**.
 
 ## 8.4 Batching criterion
