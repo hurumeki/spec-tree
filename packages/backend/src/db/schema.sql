@@ -1,5 +1,5 @@
 -- spec-tree SQLite schema
--- Source of truth: docs/02-data-model.md (sections 2.1 - 2.7)
+-- Source of truth: docs/02-data-model.md (sections 2.1 - 2.8)
 -- All statements are idempotent. Bumped via PRAGMA user_version (see init.ts).
 
 CREATE TABLE IF NOT EXISTS nodes (
@@ -61,8 +61,22 @@ CREATE TABLE IF NOT EXISTS change_impacts (
   created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
 );
 
+CREATE TABLE IF NOT EXISTS reviews (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  source_type TEXT NOT NULL CHECK (source_type IN ('extract', 'link', 'impact', 'bundle')),
+  node_id     TEXT REFERENCES nodes(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  edge_id     INTEGER REFERENCES edges(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  cr_id       TEXT REFERENCES change_requests(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  severity    TEXT NOT NULL CHECK (severity IN ('info', 'warning', 'error')),
+  category    TEXT NOT NULL,
+  message     TEXT NOT NULL,
+  status      TEXT NOT NULL CHECK (status IN ('unresolved', 'resolved', 'rejected')) DEFAULT 'unresolved',
+  created_at  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+);
+
 CREATE INDEX IF NOT EXISTS idx_edges_source_status        ON edges (source_id, status);
 CREATE INDEX IF NOT EXISTS idx_edges_target               ON edges (target_id);
 CREATE INDEX IF NOT EXISTS idx_node_versions_node_version ON node_versions (node_id, version);
 CREATE INDEX IF NOT EXISTS idx_edge_history_edge          ON edge_history (edge_id);
 CREATE INDEX IF NOT EXISTS idx_change_impacts_cr          ON change_impacts (change_request_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_status             ON reviews (status);

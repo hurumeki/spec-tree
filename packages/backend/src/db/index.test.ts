@@ -35,6 +35,7 @@ const TABLES = [
   'edges',
   'node_versions',
   'nodes',
+  'reviews',
 ] as const;
 
 const EXPECTED_COLUMNS: Record<(typeof TABLES)[number], readonly string[]> = {
@@ -62,6 +63,18 @@ const EXPECTED_COLUMNS: Record<(typeof TABLES)[number], readonly string[]> = {
     'analysis',
     'created_at',
   ],
+  reviews: [
+    'id',
+    'source_type',
+    'node_id',
+    'edge_id',
+    'cr_id',
+    'severity',
+    'category',
+    'message',
+    'status',
+    'created_at',
+  ],
 };
 
 const EXPECTED_INDEXES = [
@@ -70,6 +83,7 @@ const EXPECTED_INDEXES = [
   'idx_node_versions_node_version',
   'idx_edge_history_edge',
   'idx_change_impacts_cr',
+  'idx_reviews_status',
 ];
 
 function seedFixture(db: Database): void {

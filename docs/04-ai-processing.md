@@ -8,12 +8,12 @@ All AI processing is performed via the Claude Code CLI and produces JSON output.
 
 ## 4.1 Prompt catalog
 
-| Prompt | Goal | Input | Output |
-| :----- | :--- | :---- | :----- |
-| **extract.md** | Structure a document and assign IDs. | Markdown document | `extract_result.json` |
-| **link.md** | Infer links between nodes. | All-nodes JSON | `link_result.json` |
-| **review.md** | Point out gaps and leaps in the specification. | Nodes + edges JSON | Review-findings JSON |
-| **impact.md** | Analyze the impact of a specification change. | Change document + DB snapshot | `impact_result.json` |
+| Prompt         | Goal                                           | Input                         | Output                |
+| :------------- | :--------------------------------------------- | :---------------------------- | :-------------------- |
+| **extract.md** | Structure a document and assign IDs.           | Markdown document             | `extract_result.json` |
+| **link.md**    | Infer links between nodes.                     | All-nodes JSON                | `link_result.json`    |
+| **review.md**  | Point out gaps and leaps in the specification. | Nodes + edges JSON            | Review-findings JSON  |
+| **impact.md**  | Analyze the impact of a specification change.  | Change document + DB snapshot | `impact_result.json`  |
 
 ## 4.2 Structured extraction — `extract.md`
 
@@ -46,12 +46,12 @@ Analyzes the structured data as a whole and raises quality issues.
 
 ### 4.4.1 Types of findings
 
-| Type | Description |
-| :--- | :---------- |
-| **missing_coverage** | A specification has no corresponding test case. |
-| **missing_spec** | A requirement has no corresponding specification. |
-| **spec_gap** | A specification has a logical leap or missing precondition. |
-| **inconsistency** | Contradiction between specifications or between tests. |
+| Type                 | Description                                                 |
+| :------------------- | :---------------------------------------------------------- |
+| **missing_coverage** | A specification has no corresponding test case.             |
+| **missing_spec**     | A requirement has no corresponding specification.           |
+| **spec_gap**         | A specification has a logical leap or missing precondition. |
+| **inconsistency**    | Contradiction between specifications or between tests.      |
 
 ## 4.5 Impact analysis — `impact.md`
 
@@ -59,7 +59,7 @@ From a specification-change document, identifies the nodes directly affected. Tr
 
 ### 4.5.1 Division of labor: AI vs. program
 
-| Handled by | What it does |
-| :--------- | :----------- |
-| **AI (CLI)** | Understand the change; identify semantically, directly affected nodes; propose new nodes. |
-| **Program (UI)** | Compute chained impact by traversing `depends_on` / `verifies` edges (recursive CTE). |
+| Handled by       | What it does                                                                              |
+| :--------------- | :---------------------------------------------------------------------------------------- |
+| **AI (CLI)**     | Understand the change; identify semantically, directly affected nodes; propose new nodes. |
+| **Program (UI)** | Compute chained impact by traversing `depends_on` / `verifies` edges (recursive CTE).     |

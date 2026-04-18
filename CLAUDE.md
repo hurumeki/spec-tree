@@ -46,16 +46,16 @@ spec-tree/
 
 ## Common commands (run from repo root)
 
-| Command | What it does |
-| :------ | :----------- |
-| `npm install` | Install dependencies across all workspaces. |
-| `npm run dev` | Start the web workspace's Vite dev server. |
-| `npm run build` | Build all workspaces. |
-| `npm run test` | Run Vitest across all workspaces. |
-| `npm run typecheck` | Type-check all workspaces. |
-| `npm run lint` | Run ESLint over the whole repository. |
-| `npm run format` | Apply Prettier formatting. |
-| `npm run format:check` | Verify formatting without writing. |
+| Command                | What it does                                |
+| :--------------------- | :------------------------------------------ |
+| `npm install`          | Install dependencies across all workspaces. |
+| `npm run dev`          | Start the web workspace's Vite dev server.  |
+| `npm run build`        | Build all workspaces.                       |
+| `npm run test`         | Run Vitest across all workspaces.           |
+| `npm run typecheck`    | Type-check all workspaces.                  |
+| `npm run lint`         | Run ESLint over the whole repository.       |
+| `npm run format`       | Apply Prettier formatting.                  |
+| `npm run format:check` | Verify formatting without writing.          |
 
 Scope a command to a single workspace with `-w packages/<name>` or `--workspace packages/<name>`.
 

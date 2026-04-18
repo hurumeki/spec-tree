@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import type { Database } from 'better-sqlite3';
 import { MIGRATIONS } from './migrations.js';
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
 const schemaSql = readFileSync(new URL('./schema.sql', import.meta.url), 'utf8');
 

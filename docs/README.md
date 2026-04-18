@@ -10,17 +10,17 @@
 
 ## Table of contents
 
-| # | File | What it covers |
-| :- | :--- | :--- |
-| 1 | [01-system-overview.md](./01-system-overview.md) | Purpose, scope, high-level architecture, tech stack. |
-| 2 | [02-data-model.md](./02-data-model.md) | SQLite schema: `nodes`, `node_versions`, `edges`, `edge_history`, `change_requests`, `change_impacts`, design decisions. |
-| 3 | [03-json-formats.md](./03-json-formats.md) | CLI ↔ UI exchange formats: `extract_result`, `link_result`, `impact_result`, `bundle`, `db_snapshot`. |
-| 4 | [04-ai-processing.md](./04-ai-processing.md) | The four CLI prompts (`extract`, `link`, `review`, `impact`) and their rules. |
-| 5 | [05-cli-workflow.md](./05-cli-workflow.md) | Initial-import pipeline, change-analysis pipeline, directory layout, automation. |
-| 6 | [06-web-ui.md](./06-web-ui.md) | Screens, JSON-import wizard, impact view, REST API. |
-| 7 | [07-impact-analysis.md](./07-impact-analysis.md) | Direct vs. transitive impact, recursive CTE, visual encoding. |
-| 8 | [08-operations.md](./08-operations.md) | Status lifecycle, versioning rules, review operations, batching. |
-| 9 | [09-non-functional.md](./09-non-functional.md) | Performance, data safety, extensibility, constraints. |
+| #   | File                                             | What it covers                                                                                                                      |
+| :-- | :----------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | [01-system-overview.md](./01-system-overview.md) | Purpose, scope, high-level architecture, tech stack.                                                                                |
+| 2   | [02-data-model.md](./02-data-model.md)           | SQLite schema: `nodes`, `node_versions`, `edges`, `edge_history`, `change_requests`, `change_impacts`, `reviews`, design decisions. |
+| 3   | [03-json-formats.md](./03-json-formats.md)       | CLI ↔ UI exchange formats: `extract_result`, `link_result`, `impact_result`, `bundle`, `db_snapshot`.                               |
+| 4   | [04-ai-processing.md](./04-ai-processing.md)     | The four CLI prompts (`extract`, `link`, `review`, `impact`) and their rules.                                                       |
+| 5   | [05-cli-workflow.md](./05-cli-workflow.md)       | Initial-import pipeline, change-analysis pipeline, directory layout, automation.                                                    |
+| 6   | [06-web-ui.md](./06-web-ui.md)                   | Screens, JSON-import wizard, impact view, REST API.                                                                                 |
+| 7   | [07-impact-analysis.md](./07-impact-analysis.md) | Direct vs. transitive impact, recursive CTE, visual encoding.                                                                       |
+| 8   | [08-operations.md](./08-operations.md)           | Status lifecycle, versioning rules, review operations, batching.                                                                    |
+| 9   | [09-non-functional.md](./09-non-functional.md)   | Performance, data safety, extensibility, constraints.                                                                               |
 
 ## How to navigate as an AI agent
 
@@ -32,9 +32,9 @@
 
 ## ID prefix glossary
 
-| Prefix | Meaning |
-| :----- | :------ |
-| `REQ-` | Requirement node |
+| Prefix  | Meaning            |
+| :------ | :----------------- |
+| `REQ-`  | Requirement node   |
 | `SPEC-` | Specification node |
-| `TC-` | Test-case node |
-| `CR-` | Change request |
+| `TC-`   | Test-case node     |
+| `CR-`   | Change request     |
