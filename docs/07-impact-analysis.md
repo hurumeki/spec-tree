@@ -29,9 +29,9 @@ SELECT * FROM impact;
 
 ## 7.3 Visualization
 
-| depth | Color | Rendering |
-| :---- | :---- | :-------- |
-| **0 (direct)** | Red (`#E24B4A`) | Thick border, dark fill. |
-| **1** | Orange (`#EF9F27`) | Normal border, medium fill. |
-| **2+** | Pale orange (`#FAEEDA`) | Thin border, pale fill. |
-| **New addition** | Green (`#639922`) | Dashed border. |
+| depth            | Color                   | Rendering                   |
+| :--------------- | :---------------------- | :-------------------------- |
+| **0 (direct)**   | Red (`#E24B4A`)         | Thick border, dark fill.    |
+| **1**            | Orange (`#EF9F27`)      | Normal border, medium fill. |
+| **2+**           | Pale orange (`#FAEEDA`) | Thin border, pale fill.     |
+| **New addition** | Green (`#639922`)       | Dashed border.              |

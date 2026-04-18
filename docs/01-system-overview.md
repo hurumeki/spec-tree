@@ -12,14 +12,14 @@ It uses generative AI (Claude Code CLI) to structure documents, infer links, rev
 
 ## 1.2 Scope
 
-| Item | Content |
-| :--- | :------ |
-| **Target documents** | Requirement specification, functional specification, test-case document (Markdown / text format). |
-| **Management hierarchy** | Requirement (REQ) → Specification (SPEC) → Test Case (TC), three tiers. |
-| **Test granularity** | Up to E2E test level. |
-| **Users** | PM, QA (small team, ~10 people). |
-| **Runtime environment** | Local (browser + local server). |
-| **External tool integration** | Not required (standalone). |
+| Item                          | Content                                                                                           |
+| :---------------------------- | :------------------------------------------------------------------------------------------------ |
+| **Target documents**          | Requirement specification, functional specification, test-case document (Markdown / text format). |
+| **Management hierarchy**      | Requirement (REQ) → Specification (SPEC) → Test Case (TC), three tiers.                           |
+| **Test granularity**          | Up to E2E test level.                                                                             |
+| **Users**                     | PM, QA (small team, ~10 people).                                                                  |
+| **Runtime environment**       | Local (browser + local server).                                                                   |
+| **External tool integration** | Not required (standalone).                                                                        |
 
 ## 1.3 System architecture
 
@@ -41,14 +41,14 @@ The system has two components: a **CLI side** (AI processing engine) and a **Web
 
 ## 1.4 Tech stack
 
-| Layer | Technology |
-| :---- | :--------- |
-| **AI processing** | Claude Code CLI (local execution). |
-| **Data store** | SQLite (file-based, no setup). |
-| **Backend** | Node.js (TypeScript) / REST API. |
-| **Frontend** | React + Vite + TypeScript (browser-based SPA). |
-| **Graph rendering** | Cytoscape.js. |
-| **Data exchange** | JSON files (through the filesystem). |
-| **Package management / monorepo** | npm workspaces. |
-| **Testing** | Vitest. |
-| **Code quality** | ESLint + Prettier. |
+| Layer                             | Technology                                     |
+| :-------------------------------- | :--------------------------------------------- |
+| **AI processing**                 | Claude Code CLI (local execution).             |
+| **Data store**                    | SQLite (file-based, no setup).                 |
+| **Backend**                       | Node.js (TypeScript) / REST API.               |
+| **Frontend**                      | React + Vite + TypeScript (browser-based SPA). |
+| **Graph rendering**               | Cytoscape.js.                                  |
+| **Data exchange**                 | JSON files (through the filesystem).           |
+| **Package management / monorepo** | npm workspaces.                                |
+| **Testing**                       | Vitest.                                        |
+| **Code quality**                  | ESLint + Prettier.                             |
