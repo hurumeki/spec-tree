@@ -9,6 +9,8 @@ coverage/
 
 data/*.db
 data/*.db-journal
+data/*.db-shm
+data/*.db-wal
 output/*.json
 
 .DS_Store
