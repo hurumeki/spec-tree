@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+package-lock.json
+.vite/
+
+# Preserve the original spec document formatting
+traceability_system_spec_v1.md
