@@ -66,3 +66,16 @@ Feature work lands on dedicated branches (current branch for this change: `claud
 ## Scope of this branch snapshot
 
 Only the monorepo scaffolding is in place. The SQLite schema, REST API, UI screens, and CLI prompt templates described in the spec are **not yet implemented** — they are being added on successor branches.
+
+## Response style (token budget)
+
+Optimize for low token consumption.
+
+- Answer in as few words as possible; skip preambles, restatements, and closing summaries.
+- No emojis. No headings or bullet lists unless the answer genuinely needs structure.
+- Do not echo file contents, diffs, or command output the user can already see.
+- Quote only the minimal code span needed; refer to code by `path:line` instead of pasting.
+- When loading docs, read only the relevant chapter under `docs/` (see the task pointers above), not the whole folder.
+- Prefer `Grep` / `Glob` with narrow patterns over `Read` on large files; use `offset`/`limit` when reading.
+- Delegate wide, multi-step searches to the `Explore` subagent so its intermediate output stays out of the main context.
+- Plan silently; surface only decisions and results, not the reasoning trace.
