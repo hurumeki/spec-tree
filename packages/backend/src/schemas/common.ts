@@ -10,7 +10,7 @@ export const ChangeRequestIdSchema = z.string().regex(/^CR-\d{3,}$/, {
 
 export const NodeTypeSchema = z.enum(['requirement', 'specification', 'test_case']);
 export const NodeStatusSchema = z.enum(['draft', 'reviewed', 'approved', 'deprecated']);
-export const PrioritySchema = z.enum(['高', '中', '低']);
+export const PrioritySchema = z.enum(['high', 'middle', 'low']);
 export const RelationTypeSchema = z.enum(['realizes', 'verifies', 'depends_on']);
 export const EdgeStatusSchema = z.enum(['proposed', 'approved', 'deprecated']);
 export const ChangeRequestStatusSchema = z.enum(['analyzing', 'reviewed', 'applied']);

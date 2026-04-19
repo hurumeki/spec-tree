@@ -132,9 +132,9 @@ const NodeDetailPage = () => {
               value={edit.priority}
               onChange={(e) => setEdit({ ...edit, priority: e.target.value as Priority })}
             >
-              <option value="高">高</option>
-              <option value="中">中</option>
-              <option value="低">低</option>
+              <option value="high">high</option>
+              <option value="middle">middle</option>
+              <option value="low">low</option>
             </select>
           </label>
           <label>

@@ -195,15 +195,15 @@ button:disabled {
   color: #4b5563;
   text-decoration: line-through;
 }
-.badge-priority-高 {
+.badge-priority-high {
   background: #fee2e2;
   color: #991b1b;
 }
-.badge-priority-中 {
+.badge-priority-middle {
   background: #fef3c7;
   color: #92400e;
 }
-.badge-priority-低 {
+.badge-priority-low {
   background: #e0e7ff;
   color: #3730a3;
 }

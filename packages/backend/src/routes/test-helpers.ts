@@ -17,10 +17,10 @@ export function seedBaseNodes(db: Database): void {
      VALUES (?, 1, ?, ?, ?, ?)`,
   );
   const rows = [
-    ['REQ-001', 'requirement', 'approved', 'Requirement one', 'req one content', '["req"]', '高'],
-    ['SPEC-001', 'specification', 'approved', 'Spec one', 'spec one content', '[]', '中'],
-    ['SPEC-002', 'specification', 'draft', 'Spec two', 'spec two content', '[]', '中'],
-    ['TC-001', 'test_case', 'draft', 'Test one', 'tc one content', '[]', '低'],
+    ['REQ-001', 'requirement', 'approved', 'Requirement one', 'req one content', '["req"]', 'high'],
+    ['SPEC-001', 'specification', 'approved', 'Spec one', 'spec one content', '[]', 'middle'],
+    ['SPEC-002', 'specification', 'draft', 'Spec two', 'spec two content', '[]', 'middle'],
+    ['TC-001', 'test_case', 'draft', 'Test one', 'tc one content', '[]', 'low'],
   ] as const;
   for (const [id, type, status, title, content, tags, priority] of rows) {
     insertNode.run(id, type, status);

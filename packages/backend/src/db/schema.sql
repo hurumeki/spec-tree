@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS node_versions (
   title         TEXT NOT NULL,
   content       TEXT NOT NULL,
   tags          TEXT NOT NULL DEFAULT '[]',
-  priority      TEXT NOT NULL CHECK (priority IN ('高', '中', '低')),
+  priority      TEXT NOT NULL CHECK (priority IN ('high', 'middle', 'low')),
   change_reason TEXT,
   created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
   UNIQUE (node_id, version)

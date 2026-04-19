@@ -2,7 +2,7 @@
 
 export type NodeType = 'requirement' | 'specification' | 'test_case';
 export type NodeStatus = 'draft' | 'reviewed' | 'approved' | 'deprecated';
-export type Priority = '高' | '中' | '低';
+export type Priority = 'high' | 'middle' | 'low';
 export type RelationType = 'realizes' | 'verifies' | 'depends_on';
 export type EdgeStatus = 'proposed' | 'approved' | 'deprecated';
 export type ReviewSeverity = 'info' | 'warning' | 'error';
