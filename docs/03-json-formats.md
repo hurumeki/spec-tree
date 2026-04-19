@@ -2,9 +2,9 @@
 
 - **Spec version:** 1.0
 - **Source chapter:** 3. JSON交換フォーマット
-- **Purpose:** Defines the five JSON shapes used to pass data between the CLI and the Web UI. Cross-references [Data Model](./02-data-model.md) for node/edge fields.
+- **Purpose:** Defines the six JSON shapes used to pass data between the CLI and the Web UI. Cross-references [Data Model](./02-data-model.md) for node/edge fields.
 
-The CLI and Web UI exchange data as JSON files. Five formats are defined. Each format that carries `reviews[]` lands in the [`reviews` table](./02-data-model.md#27-reviews-table) on import, tagged with the originating `meta.type` as `source_type`.
+The CLI and Web UI exchange data as JSON files. Six formats are defined. Each format that carries `reviews[]` lands in the [`reviews` table](./02-data-model.md#27-reviews-table) on import, tagged with the originating `meta.type` as `source_type`.
 
 ## 3.1 Structured-extraction result — `extract_result.json`
 
@@ -64,3 +64,13 @@ Full-database snapshot exported from the Web UI. Used by the CLI as context duri
 | **meta.exported_at** | Export timestamp.                        |
 | **nodes[]**          | All nodes (with latest-version content). |
 | **edges[]**          | All edges (including `deprecated`).      |
+
+## 3.6 Review result — `review_result.json`
+
+Output of the `review.md` prompt. Contains AI-generated quality findings over the full set of nodes and edges. Consumed locally by the CLI (e.g. merged into `bundle.json` via `jq`) rather than POSTed directly to the API.
+
+| Field                 | Description                      |
+| :-------------------- | :------------------------------- |
+| **meta.type**         | Fixed: `"review"`.               |
+| **meta.generated_at** | Generation timestamp (ISO 8601). |
+| **reviews[]**         | Array of AI review findings.     |
