@@ -33,4 +33,44 @@ const v2_addReviews: Migration = {
   },
 };
 
-export const MIGRATIONS: readonly Migration[] = [v2_addReviews];
+// v3 replaces the Japanese priority enum (高/中/低) with English
+// (high/middle/low) on node_versions. SQLite cannot alter a CHECK
+// constraint in place, so the table is rebuilt with data migrated by a
+// CASE expression. schema.sql already carries the new constraint for
+// fresh databases; this migration brings legacy v2 databases to parity.
+const v3_englishPriority: Migration = {
+  version: 3,
+  apply: (db) => {
+    db.exec(`
+      CREATE TABLE node_versions_new (
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        node_id       TEXT NOT NULL REFERENCES nodes(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+        version       INTEGER NOT NULL,
+        title         TEXT NOT NULL,
+        content       TEXT NOT NULL,
+        tags          TEXT NOT NULL DEFAULT '[]',
+        priority      TEXT NOT NULL CHECK (priority IN ('high', 'middle', 'low')),
+        change_reason TEXT,
+        created_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+        UNIQUE (node_id, version)
+      );
+      INSERT INTO node_versions_new
+        (id, node_id, version, title, content, tags, priority, change_reason, created_at)
+      SELECT
+        id, node_id, version, title, content, tags,
+        CASE priority
+          WHEN '高' THEN 'high'
+          WHEN '中' THEN 'middle'
+          WHEN '低' THEN 'low'
+          ELSE priority
+        END,
+        change_reason, created_at
+      FROM node_versions;
+      DROP TABLE node_versions;
+      ALTER TABLE node_versions_new RENAME TO node_versions;
+      CREATE INDEX IF NOT EXISTS idx_node_versions_node_version ON node_versions (node_id, version);
+    `);
+  },
+};
+
+export const MIGRATIONS: readonly Migration[] = [v2_addReviews, v3_englishPriority];

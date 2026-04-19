@@ -31,7 +31,7 @@ Holds the full content-change history of each node. Every change creates a new v
 | **title**         | TEXT       | Summary of the item (≤ 30 characters).                             |
 | **content**       | TEXT       | The relevant passage from the source document, preserved verbatim. |
 | **tags**          | TEXT       | JSON array of tags.                                                |
-| **priority**      | TEXT       | 高 / 中 / 低 (high / medium / low).                                |
+| **priority**      | TEXT       | `high` / `middle` / `low`.                                         |
 | **change_reason** | TEXT       | Reason for the change.                                             |
 | **created_at**    | TEXT       | Creation timestamp (ISO 8601).                                     |
 

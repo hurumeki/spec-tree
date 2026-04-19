@@ -12,9 +12,9 @@
 ```json
 {
   "nodes": [
-    { "id": "REQ-001", "type": "requirement", "title": "...", "content": "...", "tags": [...], "priority": "高" },
-    { "id": "SPEC-001", "type": "specification", "title": "...", "content": "...", "tags": [...], "priority": "中" },
-    { "id": "TC-001", "type": "test_case", "title": "...", "content": "...", "tags": [...], "priority": "低" }
+    { "id": "REQ-001", "type": "requirement", "title": "...", "content": "...", "tags": [...], "priority": "high" },
+    { "id": "SPEC-001", "type": "specification", "title": "...", "content": "...", "tags": [...], "priority": "middle" },
+    { "id": "TC-001", "type": "test_case", "title": "...", "content": "...", "tags": [...], "priority": "low" }
   ]
 }
 ```

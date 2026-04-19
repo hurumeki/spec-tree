@@ -31,7 +31,7 @@ describe('POST /api/import', () => {
           title: 'Login',
           content: 'Users must log in.',
           tags: ['auth'],
-          priority: '高',
+          priority: 'high',
         },
       ],
       reviews: [{ node_id: 'REQ-001', severity: 'info', category: 'style', message: 'Looks fine' }],
@@ -56,7 +56,7 @@ describe('POST /api/import', () => {
       title: 'Login',
       content: 'v1',
       tags: [],
-      priority: '高',
+      priority: 'high',
     };
     const mkPayload = (node: typeof base) => ({
       meta: {
@@ -132,7 +132,7 @@ describe('POST /api/import', () => {
           title: 'Lockout rule',
           content: 'Lock after 5 failures.',
           tags: [],
-          priority: '中',
+          priority: 'middle',
         },
       ],
       reviews: [],
@@ -160,7 +160,7 @@ describe('POST /api/import', () => {
           title: 'R1',
           content: 'c',
           tags: [],
-          priority: '高',
+          priority: 'high',
         },
         {
           id: 'SPEC-001',
@@ -168,7 +168,7 @@ describe('POST /api/import', () => {
           title: 'S1',
           content: 'c',
           tags: [],
-          priority: '中',
+          priority: 'middle',
         },
       ],
       edges: [

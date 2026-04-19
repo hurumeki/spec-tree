@@ -25,7 +25,7 @@ Extracts requirements / specifications / test cases from a document, assigns IDs
 - `title` must summarize the item in ≤ 30 characters.
 - `content` must preserve the corresponding passage from the source verbatim.
 - `tags` are auto-classified as comma-separated related keywords.
-- `priority` is set to **高 (high)** for items involving security or data loss.
+- `priority` is set to **`high`** for items involving security or data loss.
 - Emit no text outside of JSON.
 
 ## 4.3 Link inference — `link.md`

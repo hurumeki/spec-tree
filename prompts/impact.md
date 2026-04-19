@@ -26,7 +26,7 @@
   - `required_action`: 必要な対応 (任意。「内容更新」「テスト見直し」など)
 - `suggested_new_nodes[]` には変更により **新たに必要になるノード** を入れる。
   - `id` は省略する (サーバ側で採番される)。やむを得ず指定する場合は `REQ-###` / `SPEC-###` / `TC-###` 形式 (3 桁以上) で、既存 ID と衝突しない値を使う。
-  - `type` / `title` (≤30 文字) / `content` / `tags` / `priority` (`高` / `中` / `低`) は `extract` と同じスキーマで埋める。
+  - `type` / `title` (≤30 文字) / `content` / `tags` / `priority` (`high` / `middle` / `low`) は `extract` と同じスキーマで埋める。
   - 提案がなければ空配列 `[]`。
 - `change_request` は省略可。明示的に `id` を付けない場合はサーバが `CR-###` を採番する。タイトル・説明を含めるなら次の形:
   - `title`: 変更要求の要約 (必須)
@@ -66,7 +66,7 @@
       "title": "OAuth2 トークン検証",
       "content": "外部 IdP から取得した ID トークンの署名と有効期限を検証する。",
       "tags": ["oauth2", "認証"],
-      "priority": "高"
+      "priority": "high"
     }
   ],
   "reviews": []

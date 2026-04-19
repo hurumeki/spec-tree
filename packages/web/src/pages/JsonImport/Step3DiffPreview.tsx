@@ -144,9 +144,9 @@ const Step3DiffPreview = ({ parsed, onBack, onSubmit, submitting }: Step3Props) 
                     value={r.node.priority}
                     onChange={(e) => updateField(i, 'priority', e.target.value as Priority)}
                   >
-                    <option value="高">高</option>
-                    <option value="中">中</option>
-                    <option value="低">低</option>
+                    <option value="high">high</option>
+                    <option value="middle">middle</option>
+                    <option value="low">low</option>
                   </select>
                 </td>
               </tr>
