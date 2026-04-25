@@ -25,7 +25,7 @@
 
 ## 5.3 Directory layout
 
-The repository uses an npm-workspaces monorepo. The root-level folders `prompts/`, `input/`, `output/`, and `data/` are working directories read/written by the CLI. The actual application workspaces live under `packages/`.
+The repository uses an npm-workspaces monorepo. The root-level folders `prompts/`, `input/`, `output/`, and `data/` are working directories read/written by the CLI. The actual application workspaces live under `packages/` (including `@spec-tree/ai`, the provider-agnostic AI runner).
 
 ```
 project/
@@ -44,6 +44,10 @@ project/
   data/              # SQLite database
     trace.db
   packages/
+    ai/              # Provider-agnostic AI runner (CLI + library)
+      src/
+      package.json
+      tsconfig.json
     backend/         # Node.js (TypeScript) REST API server
       src/
       package.json
@@ -64,4 +68,13 @@ A Makefile or npm scripts can drive the initial-import pipeline as a single comm
 make init DOCS=./input/    # run steps 1–7 in one shot
 make import                # auto-ingest bundle.json into the UI
 make impact DOC=change.md  # run impact analysis
+```
+
+Every prompt invocation goes through `@spec-tree/ai`, so the AI provider is selected once via env or `ai.config.json` and applies to all four prompts:
+
+```
+AI_PROVIDER=anthropic AI_API_KEY=sk-… make init   # use Anthropic API
+AI_PROVIDER=openai    AI_API_KEY=sk-… make init   # use OpenAI
+AI_PROVIDER=ollama    AI_MODEL=llama3.1 make init # use local Ollama
+# (default) AI_PROVIDER=claude-code                 # use Claude Code CLI
 ```

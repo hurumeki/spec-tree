@@ -17,4 +17,4 @@ out="$OUTPUT_DIR/review_result.json"
 [[ -f "$links" ]] || die "missing $links"
 
 jq -s '{ nodes: .[0].nodes, edges: .[1].edges }' "$nodes" "$links" \
-  | bash "$SCRIPT_DIR/run-claude.sh" "$PROMPTS_DIR/review.md" "$out"
+  | bash "$SCRIPT_DIR/run-prompt.sh" "$PROMPTS_DIR/review.md" "$out"

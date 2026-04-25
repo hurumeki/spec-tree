@@ -4,7 +4,7 @@ Guidance for Claude Code when working in this repository.
 
 ## Project
 
-`spec-tree` is a **traceability management system**: it tracks the links between requirements (REQ), functional specifications (SPEC), and test cases (TC), and computes the impact scope of specification changes. The system has two halves — a CLI side that uses the Claude Code CLI to structure documents, infer links, review specs, and analyze change impact, and a Web UI side (React + Vite SPA over a Node.js REST API, backed by SQLite) where humans review and approve the AI output. The two sides exchange JSON files through the local filesystem.
+`spec-tree` is a **traceability management system**: it tracks the links between requirements (REQ), functional specifications (SPEC), and test cases (TC), and computes the impact scope of specification changes. The system has two halves — a CLI side that runs a pluggable AI provider (default: Claude Code CLI; also Anthropic API, OpenAI API, and Ollama via `@spec-tree/ai`) to structure documents, infer links, review specs, and analyze change impact, and a Web UI side (React + Vite SPA over a Node.js REST API, backed by SQLite) where humans review and approve the AI output. The two sides exchange JSON files through the local filesystem.
 
 ## Where the spec lives
 
@@ -31,6 +31,7 @@ spec-tree/
 ├── output/             # CLI JSON output
 ├── data/               # SQLite database (trace.db)
 └── packages/
+    ├── ai/             # Provider-agnostic AI runner (claude-code / anthropic / openai / ollama)
     ├── backend/        # Node.js + TypeScript REST API
     └── web/            # React + Vite SPA
 ```

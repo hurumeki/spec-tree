@@ -13,4 +13,4 @@ out="$OUTPUT_DIR/link_result.json"
 
 [[ -f "$src" ]] || die "missing $src (run \`make all-nodes\` first)"
 
-cat "$src" | bash "$SCRIPT_DIR/run-claude.sh" "$PROMPTS_DIR/link.md" "$out"
+cat "$src" | bash "$SCRIPT_DIR/run-prompt.sh" "$PROMPTS_DIR/link.md" "$out"

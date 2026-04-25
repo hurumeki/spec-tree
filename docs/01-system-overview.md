@@ -8,7 +8,7 @@
 
 The system manages traceability between requirement specifications, functional specifications, and test cases in system development, and enables rapid identification of the impact scope when a specification changes.
 
-It uses generative AI (Claude Code CLI) to structure documents, infer links, review specifications, and analyze change impact. A human reviewer/approver then validates and confirms the data.
+It uses generative AI to structure documents, infer links, review specifications, and analyze change impact. The AI engine is pluggable: the default is the Claude Code CLI, with the Anthropic API, OpenAI API, and local Ollama models as drop-in alternatives (see `packages/ai/`). A human reviewer/approver then validates and confirms the data.
 
 ## 1.2 Scope
 
@@ -27,7 +27,9 @@ The system has two components: a **CLI side** (AI processing engine) and a **Web
 
 ### 1.3.1 CLI side (local AI agent)
 
-- Runs AI processing via the Claude Code CLI.
+- Runs AI processing via a provider-agnostic runner (`@spec-tree/ai`, see `packages/ai/`).
+- Default provider is the Claude Code CLI; alternatives include the Anthropic API, OpenAI API, and Ollama.
+- Provider selection is config-driven (`AI_PROVIDER` env or `ai.config.json`).
 - Takes documents as input and emits structured JSON output.
 - Prompt templates live under `prompts/`.
 - Processing results are written as JSON files under `output/`.
@@ -41,14 +43,14 @@ The system has two components: a **CLI side** (AI processing engine) and a **Web
 
 ## 1.4 Tech stack
 
-| Layer                             | Technology                                     |
-| :-------------------------------- | :--------------------------------------------- |
-| **AI processing**                 | Claude Code CLI (local execution).             |
-| **Data store**                    | SQLite (file-based, no setup).                 |
-| **Backend**                       | Node.js (TypeScript) / REST API.               |
-| **Frontend**                      | React + Vite + TypeScript (browser-based SPA). |
-| **Graph rendering**               | Cytoscape.js.                                  |
-| **Data exchange**                 | JSON files (through the filesystem).           |
-| **Package management / monorepo** | npm workspaces.                                |
-| **Testing**                       | Vitest.                                        |
-| **Code quality**                  | ESLint + Prettier.                             |
+| Layer                             | Technology                                                                                                   |
+| :-------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| **AI processing**                 | Pluggable provider via `@spec-tree/ai` (default: Claude Code CLI; also Anthropic API / OpenAI API / Ollama). |
+| **Data store**                    | SQLite (file-based, no setup).                                                                               |
+| **Backend**                       | Node.js (TypeScript) / REST API.                                                                             |
+| **Frontend**                      | React + Vite + TypeScript (browser-based SPA).                                                               |
+| **Graph rendering**               | Cytoscape.js.                                                                                                |
+| **Data exchange**                 | JSON files (through the filesystem).                                                                         |
+| **Package management / monorepo** | npm workspaces.                                                                                              |
+| **Testing**                       | Vitest.                                                                                                      |
+| **Code quality**                  | ESLint + Prettier.                                                                                           |
