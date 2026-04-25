@@ -30,4 +30,4 @@ source_file="$(basename "$doc")"
   printf 'doc_type: %s\n\n' "$doc_type"
   printf '本文:\n\n'
   cat "$doc"
-} | bash "$SCRIPT_DIR/run-claude.sh" "$PROMPTS_DIR/extract.md" "$out"
+} | bash "$SCRIPT_DIR/run-prompt.sh" "$PROMPTS_DIR/extract.md" "$out"

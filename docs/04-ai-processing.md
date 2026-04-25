@@ -4,7 +4,7 @@
 - **Source chapter:** 4. AI処理仕様
 - **Purpose:** Defines the four CLI prompts that drive AI processing and the rules each must follow. Outputs are the JSON shapes from [JSON Formats](./03-json-formats.md).
 
-All AI processing is performed via the Claude Code CLI and produces JSON output.
+All AI processing is performed through `@spec-tree/ai` (`packages/ai/`), which routes the rendered prompt to the configured provider and produces JSON output. The default provider is the Claude Code CLI; the Anthropic API, OpenAI API, and Ollama are interchangeable alternatives. Provider selection is read from `AI_PROVIDER` (env), `ai.config.json`, or a `--provider` CLI flag — see [`packages/ai/`](../packages/ai/) for the interface.
 
 ## 4.1 Prompt catalog
 

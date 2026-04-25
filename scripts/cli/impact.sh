@@ -29,4 +29,4 @@ source_file="$(basename "$doc")"
   cat "$doc"
   printf '\n\n===== db_snapshot.json =====\n\n'
   cat "$snapshot"
-} | bash "$SCRIPT_DIR/run-claude.sh" "$PROMPTS_DIR/impact.md" "$out"
+} | bash "$SCRIPT_DIR/run-prompt.sh" "$PROMPTS_DIR/impact.md" "$out"

@@ -29,47 +29,9 @@ atomic_write() {
   mv "$tmp" "$dest"
 }
 
-# strip_fence — strip a leading UTF-8 BOM, surrounding whitespace, and a
-# wrapping ```json ... ``` (or ``` ... ```) fence pair from stdin.
-strip_fence() {
-  awk '
-    BEGIN { started = 0 }
-    {
-      if (NR == 1) sub(/^\xef\xbb\xbf/, "", $0)
-      if (!started) {
-        if ($0 ~ /^[[:space:]]*$/) next
-        if ($0 ~ /^[[:space:]]*```([[:alnum:]]+)?[[:space:]]*$/) { started = 1; next }
-        started = 1
-      }
-      print
-    }
-  ' | awk '
-    { lines[NR] = $0 }
-    END {
-      end = NR
-      while (end > 0 && lines[end] ~ /^[[:space:]]*$/) end--
-      if (end > 0 && lines[end] ~ /^[[:space:]]*```[[:space:]]*$/) end--
-      for (i = 1; i <= end; i++) print lines[i]
-    }
-  '
-}
-
-# ensure_iso_timestamp — read a JSON object on stdin, write it back to stdout
-# with .meta.generated_at populated (ISO 8601, UTC, ms-precision) if missing or
-# not a valid ISO string.
-ensure_iso_timestamp() {
-  local now
-  now="$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
-  jq --arg now "$now" '
-    .meta = (.meta // {}) |
-    .meta.generated_at =
-      ( if (.meta.generated_at | type) == "string"
-          and (.meta.generated_at | test("^\\d{4}-\\d{2}-\\d{2}T"))
-        then .meta.generated_at
-        else $now
-        end )
-  '
-}
+# Note: fence stripping and meta.generated_at injection now live in
+# @spec-tree/ai (packages/ai/src/postprocess.ts) and are applied automatically
+# by run-prompt.sh.
 
 # api_health — probe the backend; print a friendly hint on failure.
 api_health() {

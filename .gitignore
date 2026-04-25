@@ -16,3 +16,7 @@ output/*.json
 .DS_Store
 .idea/
 .vscode/
+
+ai.config.json
+.env
+.env.local

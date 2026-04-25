@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.schemastore.org/base",
+  "_comment": "Copy to ai.config.json and edit. Provider precedence: CLI flag > AI_PROVIDER env > this file > built-in default ('claude-code'). Secrets prefer environment variables (AI_API_KEY) — keep ai.config.json out of version control if you put keys here.",
+  "provider": "claude-code",
+  "model": null,
+  "_examples": {
+    "claude-code": { "provider": "claude-code" },
+    "anthropic": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-6",
+      "apiKey": "${ANTHROPIC_API_KEY}",
+      "maxTokens": 8192
+    },
+    "openai": {
+      "provider": "openai",
+      "model": "gpt-4o-mini",
+      "apiKey": "${OPENAI_API_KEY}",
+      "maxTokens": 8192
+    },
+    "ollama": {
+      "provider": "ollama",
+      "model": "llama3.1",
+      "baseUrl": "http://127.0.0.1:11434"
+    }
+  }
+}
