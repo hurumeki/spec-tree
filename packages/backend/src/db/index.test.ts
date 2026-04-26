@@ -84,6 +84,7 @@ const EXPECTED_INDEXES = [
   'idx_edge_history_edge',
   'idx_change_impacts_cr',
   'idx_reviews_status',
+  'idx_nodes_type_status',
 ];
 
 function seedFixture(db: Database): void {

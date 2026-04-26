@@ -8,7 +8,8 @@ import {
   NodeTypeSchema,
   PrioritySchema,
 } from '../schemas/common.js';
-import { getNodeDetail, listNodes, updateNode } from '../services/nodes.js';
+import { HttpError } from '../errors.js';
+import { getNodeDetail, listNodes, MAX_LIST_LIMIT, updateNode } from '../services/nodes.js';
 
 export async function registerNodeRoutes(app: FastifyInstance, db: Database): Promise<void> {
   const typed = app.withTypeProvider<ZodTypeProvider>();
@@ -21,10 +22,12 @@ export async function registerNodeRoutes(app: FastifyInstance, db: Database): Pr
           type: NodeTypeSchema.optional(),
           status: NodeStatusSchema.optional(),
           q: z.string().optional(),
+          limit: z.coerce.number().int().min(1).max(MAX_LIST_LIMIT).optional(),
+          offset: z.coerce.number().int().min(0).optional(),
         }),
       },
     },
-    async (req) => ({ nodes: listNodes(db, req.query) }),
+    async (req) => listNodes(db, req.query),
   );
 
   typed.get(
@@ -64,8 +67,9 @@ export async function registerNodeRoutes(app: FastifyInstance, db: Database): Pr
       try {
         return updateNode(db, req.params.id, req.body);
       } catch (err) {
-        const e = err as Error & { statusCode?: number };
-        if (e.statusCode === 404) return reply.code(404).send({ error: 'not_found' });
+        if (err instanceof HttpError) {
+          return reply.code(err.statusCode).send({ error: err.code });
+        }
         throw err;
       }
     },

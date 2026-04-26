@@ -3,6 +3,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import type { Database } from 'better-sqlite3';
 import { EdgeStatusSchema, NodeIdSchema, RelationTypeSchema } from '../schemas/common.js';
+import { HttpError } from '../errors.js';
 import { listEdges, updateEdge } from '../services/edges.js';
 
 export async function registerEdgeRoutes(app: FastifyInstance, db: Database): Promise<void> {
@@ -38,8 +39,9 @@ export async function registerEdgeRoutes(app: FastifyInstance, db: Database): Pr
       try {
         return updateEdge(db, req.params.id, req.body);
       } catch (err) {
-        const e = err as Error & { statusCode?: number };
-        if (e.statusCode === 404) return reply.code(404).send({ error: 'not_found' });
+        if (err instanceof HttpError) {
+          return reply.code(err.statusCode).send({ error: err.code });
+        }
         throw err;
       }
     },

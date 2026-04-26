@@ -1,6 +1,7 @@
 import type { Database } from 'better-sqlite3';
 import type { z } from 'zod';
 import type { DbSnapshotSchema } from '../schemas/cli-json.js';
+import { decodeTags } from '../utils/tags.js';
 
 type DbSnapshot = z.infer<typeof DbSnapshotSchema>;
 
@@ -54,7 +55,7 @@ export function buildSnapshot(db: Database): DbSnapshot {
       type: n.type,
       title: n.title,
       content: n.content,
-      tags: JSON.parse(n.tags) as string[],
+      tags: decodeTags(n.tags),
       priority: n.priority,
       change_reason: n.change_reason ?? undefined,
       version: n.version,

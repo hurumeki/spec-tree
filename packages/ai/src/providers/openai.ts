@@ -45,7 +45,8 @@ export class OpenAiProvider implements AiProvider {
       }),
     });
     if (!res.ok) {
-      throw new Error(`openai API error ${res.status}: ${await res.text()}`);
+      await res.text().catch(() => '');
+      throw new Error(`openai API error ${res.status} ${res.statusText}`);
     }
     const body = (await res.json()) as OpenAiChatResponse;
     const text = body.choices[0]?.message?.content ?? '';

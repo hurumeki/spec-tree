@@ -27,6 +27,22 @@ describe('nodes routes', () => {
       'SPEC-002',
       'TC-001',
     ]);
+    expect(body.total).toBe(4);
+  });
+
+  it('GET /api/nodes paginates with limit and offset', async () => {
+    const page1 = await app.inject({ method: 'GET', url: '/api/nodes?limit=2&offset=0' });
+    const page2 = await app.inject({ method: 'GET', url: '/api/nodes?limit=2&offset=2' });
+    expect(page1.json().nodes.map((n: { id: string }) => n.id)).toEqual(['REQ-001', 'SPEC-001']);
+    expect(page2.json().nodes.map((n: { id: string }) => n.id)).toEqual(['SPEC-002', 'TC-001']);
+    expect(page1.json().total).toBe(4);
+    expect(page1.json().limit).toBe(2);
+    expect(page1.json().offset).toBe(0);
+  });
+
+  it('GET /api/nodes rejects out-of-range limit', async () => {
+    const res = await app.inject({ method: 'GET', url: '/api/nodes?limit=99999' });
+    expect(res.statusCode).toBe(400);
   });
 
   it('GET /api/nodes filters by type and status', async () => {

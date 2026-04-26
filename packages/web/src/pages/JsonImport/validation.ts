@@ -1,7 +1,9 @@
 import type { CliPayload, NodePayload } from '../../api/types';
 
-export const NODE_ID_RE = /^(REQ|SPEC|TC)-\d{3,}$/;
-export const CR_ID_RE = /^CR-\d{3,}$/;
+// Mirror the backend regex (packages/backend/src/schemas/common.ts) — exactly
+// 3 zero-padded digits per docs/02-data-model.md §2.1.
+export const NODE_ID_RE = /^(REQ|SPEC|TC)-\d{3}$/;
+export const CR_ID_RE = /^CR-\d{3}$/;
 export const META_TYPES = ['extract', 'link', 'impact', 'bundle'] as const;
 
 export interface ValidationIssue {

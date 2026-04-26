@@ -44,7 +44,10 @@ export class AnthropicProvider implements AiProvider {
       }),
     });
     if (!res.ok) {
-      throw new Error(`anthropic API error ${res.status}: ${await res.text()}`);
+      // Avoid surfacing the raw response body — it can echo internal prompt
+      // text or account identifiers. Drain it so the connection releases.
+      await res.text().catch(() => '');
+      throw new Error(`anthropic API error ${res.status} ${res.statusText}`);
     }
     const body = (await res.json()) as AnthropicMessageResponse;
     const text = body.content

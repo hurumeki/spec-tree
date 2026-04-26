@@ -73,4 +73,20 @@ const v3_englishPriority: Migration = {
   },
 };
 
-export const MIGRATIONS: readonly Migration[] = [v2_addReviews, v3_englishPriority];
+// v4 adds a composite index on nodes(type, status) so the
+// `GET /api/nodes?type=...&status=...` filter served by listNodes() can be
+// satisfied without a sequential scan once the table grows. schema.sql
+// carries the canonical definition; this migration brings legacy v3
+// databases to parity.
+const v4_addNodesTypeStatusIndex: Migration = {
+  version: 4,
+  apply: (db) => {
+    db.exec(`CREATE INDEX IF NOT EXISTS idx_nodes_type_status ON nodes (type, status);`);
+  },
+};
+
+export const MIGRATIONS: readonly Migration[] = [
+  v2_addReviews,
+  v3_englishPriority,
+  v4_addNodesTypeStatusIndex,
+];
