@@ -25,6 +25,32 @@ export const ExtractResultSchema = z.object({
 });
 export type ExtractResult = z.infer<typeof ExtractResultSchema>;
 
+// docs/04-ai-processing.md §4.3.1 — no self-loops, no duplicate (src,tgt,rel).
+const refineEdgeArray = <T extends z.ZodTypeAny>(arr: T) =>
+  arr.superRefine((edges, ctx) => {
+    const seen = new Map<string, number>();
+    (edges as z.infer<typeof EdgePayloadSchema>[]).forEach((edge, i) => {
+      if (edge.source_id === edge.target_id) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `edge ${edge.source_id} → ${edge.target_id} is a self-loop`,
+          path: [i, 'target_id'],
+        });
+      }
+      const key = `${edge.source_id}|${edge.target_id}|${edge.relation_type}`;
+      const prior = seen.get(key);
+      if (prior !== undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `duplicate edge ${edge.source_id} → ${edge.target_id} (${edge.relation_type}); first seen at index ${prior}`,
+          path: [i],
+        });
+      } else {
+        seen.set(key, i);
+      }
+    });
+  });
+
 // §3.2 link_result.json
 export const LinkResultSchema = z.object({
   meta: z.object({
@@ -32,7 +58,7 @@ export const LinkResultSchema = z.object({
     node_count: z.number().int().nonnegative(),
     generated_at: IsoDateTimeSchema.optional(),
   }),
-  edges: z.array(EdgePayloadSchema),
+  edges: refineEdgeArray(z.array(EdgePayloadSchema)),
   reviews: z.array(ReviewPayloadSchema).default([]),
 });
 export type LinkResult = z.infer<typeof LinkResultSchema>;
@@ -76,7 +102,7 @@ export const BundleSchema = z.object({
     generated_at: IsoDateTimeSchema.optional(),
   }),
   nodes: z.array(NodePayloadSchema),
-  edges: z.array(EdgePayloadSchema),
+  edges: refineEdgeArray(z.array(EdgePayloadSchema)),
   reviews: z.array(ReviewPayloadSchema).default([]),
 });
 export type Bundle = z.infer<typeof BundleSchema>;
@@ -88,10 +114,14 @@ export const SnapshotNodeSchema = NodePayloadSchema.extend({
   created_at: IsoDateTimeSchema,
   updated_at: IsoDateTimeSchema,
 });
+// docs/02-data-model.md §2.3 — the edges table does not persist `reasoning`,
+// so DB-derived snapshots omit it (the field is required only in AI-produced
+// link_result / bundle inputs).
 export const SnapshotEdgeSchema = EdgePayloadSchema.extend({
   id: z.number().int().positive(),
   status: z.enum(['proposed', 'approved', 'deprecated']),
   created_at: IsoDateTimeSchema,
+  reasoning: z.string().optional(),
 });
 export const DbSnapshotSchema = z.object({
   meta: z.object({

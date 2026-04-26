@@ -177,6 +177,7 @@ describe('POST /api/import', () => {
           target_id: 'SPEC-001',
           relation_type: 'realizes',
           confidence: 0.8,
+          reasoning: 'REQ-001 is realised by SPEC-001',
         },
       ],
       reviews: [],
