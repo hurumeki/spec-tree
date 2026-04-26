@@ -62,3 +62,23 @@ export function listReviews(db: Database, filter: { status?: ReviewStatus | 'all
     )
     .all(status) as ReviewRow[];
 }
+
+// docs/08-operations.md §8.3 — reviewer marks each finding as resolved or rejected.
+export function updateReviewStatus(
+  db: Database,
+  id: number,
+  status: Exclude<ReviewStatus, 'unresolved'>,
+): ReviewRow {
+  const result = db.prepare(`UPDATE reviews SET status = ? WHERE id = ?`).run(status, id);
+  if (result.changes === 0) {
+    const err = new Error(`review ${id} not found`) as Error & { statusCode?: number };
+    err.statusCode = 404;
+    throw err;
+  }
+  return db
+    .prepare(
+      `SELECT id, source_type, node_id, edge_id, cr_id, severity, category, message, status, created_at
+         FROM reviews WHERE id = ?`,
+    )
+    .get(id) as ReviewRow;
+}

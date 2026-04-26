@@ -32,6 +32,8 @@ describe('GET /api/export and round-trip with /api/import', () => {
     const bundle = {
       meta: { type: 'bundle', source_files: ['snapshot'] },
       nodes: snap.nodes,
+      // Snapshot edges have no `reasoning` (DB doesn't persist it per spec
+      // §2.3). Fabricate one so the bundle re-import passes validation.
       edges: snap.edges.map(
         (e: {
           source_id: string;
@@ -43,6 +45,7 @@ describe('GET /api/export and round-trip with /api/import', () => {
           target_id: e.target_id,
           relation_type: e.relation_type,
           confidence: e.confidence,
+          reasoning: 'reconstructed from snapshot',
         }),
       ),
       reviews: [],
