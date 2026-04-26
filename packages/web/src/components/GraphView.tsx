@@ -28,6 +28,12 @@ export interface GraphViewProps {
   height?: number | string;
 }
 
+// Cytoscape lays out and renders every element synchronously, so very large
+// graphs can freeze the main thread. docs/09-non-functional.md §9.1 targets
+// roughly 1k nodes; above that we render a placeholder so the page stays
+// responsive instead of locking up.
+export const GRAPH_RENDER_LIMIT = 1000;
+
 const baseStylesheet: StylesheetJson = [
   {
     selector: 'node',
@@ -94,9 +100,11 @@ const GraphView = ({
 }: GraphViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const cyRef = useRef<Core | null>(null);
+  const tooLarge = nodes.length + edges.length > GRAPH_RENDER_LIMIT;
 
   useEffect(() => {
     if (!containerRef.current) return;
+    if (tooLarge) return;
     const elements: ElementDefinition[] = [
       ...nodes.map((n) => ({
         data: {
@@ -133,7 +141,7 @@ const GraphView = ({
       cy.destroy();
       cyRef.current = null;
     };
-  }, [nodes, edges, layout, onNodeClick]);
+  }, [nodes, edges, layout, onNodeClick, tooLarge]);
 
   useEffect(() => {
     const cy = cyRef.current;
@@ -146,6 +154,14 @@ const GraphView = ({
     }
   }, [focusNodeId]);
 
+  if (tooLarge) {
+    return (
+      <div className="graph-view" role="status" style={{ width: '100%', height, padding: 16 }}>
+        Graph too large to render ({nodes.length} nodes, {edges.length} edges). Apply a filter to
+        narrow the view.
+      </div>
+    );
+  }
   return <div ref={containerRef} style={{ width: '100%', height }} className="graph-view" />;
 };
 

@@ -3,6 +3,7 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import type { Database } from 'better-sqlite3';
 import { ReviewStatusSchema } from '../schemas/common.js';
+import { HttpError } from '../errors.js';
 import { listReviews, updateReviewStatus } from '../services/reviews.js';
 
 export async function registerReviewRoutes(app: FastifyInstance, db: Database): Promise<void> {
@@ -32,8 +33,9 @@ export async function registerReviewRoutes(app: FastifyInstance, db: Database): 
       try {
         return { review: updateReviewStatus(db, req.params.id, req.body.status) };
       } catch (err) {
-        const e = err as Error & { statusCode?: number };
-        if (e.statusCode === 404) return reply.code(404).send({ error: 'not_found' });
+        if (err instanceof HttpError) {
+          return reply.code(err.statusCode).send({ error: err.code });
+        }
         throw err;
       }
     },

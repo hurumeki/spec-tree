@@ -1,6 +1,7 @@
 import type { Database } from 'better-sqlite3';
 import type { z } from 'zod';
 import type { EdgePayloadSchema, EdgeStatusSchema, RelationTypeSchema } from '../schemas/common.js';
+import { NotFoundError } from '../errors.js';
 
 type EdgeStatus = z.infer<typeof EdgeStatusSchema>;
 type RelationType = z.infer<typeof RelationTypeSchema>;
@@ -63,9 +64,7 @@ export function updateEdge(db: Database, id: number, input: UpdateEdgeInput): Ed
       | { status: EdgeStatus }
       | undefined;
     if (!existing) {
-      const err = new Error(`Edge ${id} not found`) as Error & { statusCode?: number };
-      err.statusCode = 404;
-      throw err;
+      throw new NotFoundError(`Edge ${id} not found`);
     }
     if (existing.status !== input.status) {
       db.prepare(`UPDATE edges SET status = ? WHERE id = ?`).run(input.status, id);

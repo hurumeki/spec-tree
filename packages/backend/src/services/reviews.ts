@@ -5,6 +5,7 @@ import type {
   ReviewSourceTypeSchema,
   ReviewStatusSchema,
 } from '../schemas/common.js';
+import { NotFoundError } from '../errors.js';
 
 type ReviewPayload = z.infer<typeof ReviewPayloadSchema>;
 type ReviewStatus = z.infer<typeof ReviewStatusSchema>;
@@ -71,9 +72,7 @@ export function updateReviewStatus(
 ): ReviewRow {
   const result = db.prepare(`UPDATE reviews SET status = ? WHERE id = ?`).run(status, id);
   if (result.changes === 0) {
-    const err = new Error(`review ${id} not found`) as Error & { statusCode?: number };
-    err.statusCode = 404;
-    throw err;
+    throw new NotFoundError(`review ${id} not found`);
   }
   return db
     .prepare(

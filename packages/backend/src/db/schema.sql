@@ -80,3 +80,4 @@ CREATE INDEX IF NOT EXISTS idx_node_versions_node_version ON node_versions (node
 CREATE INDEX IF NOT EXISTS idx_edge_history_edge          ON edge_history (edge_id);
 CREATE INDEX IF NOT EXISTS idx_change_impacts_cr          ON change_impacts (change_request_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_status             ON reviews (status);
+CREATE INDEX IF NOT EXISTS idx_nodes_type_status          ON nodes (type, status);

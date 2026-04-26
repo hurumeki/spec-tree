@@ -6,6 +6,8 @@ import type {
   NodeTypeSchema,
   PrioritySchema,
 } from '../schemas/common.js';
+import { NotFoundError } from '../errors.js';
+import { decodeTags, encodeTags } from '../utils/tags.js';
 import { nodeTypeFromId } from './ids.js';
 
 type NodePayload = z.infer<typeof NodePayloadSchema>;
@@ -44,7 +46,19 @@ export interface ListNodesFilter {
   type?: NodeType;
   status?: NodeStatus;
   q?: string;
+  limit?: number;
+  offset?: number;
 }
+
+export interface ListNodesResult {
+  nodes: NodeSummary[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export const DEFAULT_LIST_LIMIT = 100;
+export const MAX_LIST_LIMIT = 500;
 
 interface NodeRow {
   id: string;
@@ -56,15 +70,6 @@ interface NodeRow {
   tags: string;
   created_at: string;
   updated_at: string;
-}
-
-function decodeTags(tags: string): string[] {
-  try {
-    const parsed = JSON.parse(tags);
-    return Array.isArray(parsed) ? (parsed as string[]) : [];
-  } catch {
-    return [];
-  }
 }
 
 function rowToSummary(row: NodeRow): NodeSummary {
@@ -81,7 +86,7 @@ function rowToSummary(row: NodeRow): NodeSummary {
   };
 }
 
-export function listNodes(db: Database, filter: ListNodesFilter): NodeSummary[] {
+export function listNodes(db: Database, filter: ListNodesFilter): ListNodesResult {
   const where: string[] = [];
   const params: unknown[] = [];
   if (filter.type) {
@@ -98,6 +103,22 @@ export function listNodes(db: Database, filter: ListNodesFilter): NodeSummary[] 
     params.push(needle, needle);
   }
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
+
+  const limit = Math.min(Math.max(filter.limit ?? DEFAULT_LIST_LIMIT, 1), MAX_LIST_LIMIT);
+  const offset = Math.max(filter.offset ?? 0, 0);
+
+  const total = (
+    db
+      .prepare(
+        `SELECT COUNT(*) AS c
+           FROM nodes n
+           JOIN node_versions v
+             ON v.node_id = n.id AND v.version = n.current_version
+           ${whereSql}`,
+      )
+      .get(...params) as { c: number }
+  ).c;
+
   const rows = db
     .prepare(
       `SELECT n.id, n.type, n.status, n.current_version, n.created_at, n.updated_at,
@@ -106,10 +127,12 @@ export function listNodes(db: Database, filter: ListNodesFilter): NodeSummary[] 
          JOIN node_versions v
            ON v.node_id = n.id AND v.version = n.current_version
          ${whereSql}
-         ORDER BY n.id`,
+         ORDER BY n.id
+         LIMIT ? OFFSET ?`,
     )
-    .all(...params) as NodeRow[];
-  return rows.map(rowToSummary);
+    .all(...params, limit, offset) as NodeRow[];
+
+  return { nodes: rows.map(rowToSummary), total, limit, offset };
 }
 
 export function getNodeDetail(db: Database, id: string): NodeDetail | null {
@@ -186,9 +209,7 @@ export function updateNode(db: Database, id: string, input: UpdateNodeInput): No
         }
       | undefined;
     if (!existing) {
-      const err = new Error(`Node ${id} not found`) as Error & { statusCode?: number };
-      err.statusCode = 404;
-      throw err;
+      throw new NotFoundError(`Node ${id} not found`);
     }
 
     const wantsContentBump =
@@ -208,7 +229,7 @@ export function updateNode(db: Database, id: string, input: UpdateNodeInput): No
         nextVersion,
         input.title ?? existing.title,
         input.content ?? existing.content,
-        JSON.stringify(input.tags ?? decodeTags(existing.tags)),
+        encodeTags(input.tags ?? decodeTags(existing.tags)),
         input.priority ?? existing.priority,
         input.change_reason ?? null,
       );
@@ -250,7 +271,7 @@ export function createNode(db: Database, payload: NodePayload, status: NodeStatu
     payload.id,
     payload.title,
     payload.content,
-    JSON.stringify(payload.tags ?? []),
+    encodeTags(payload.tags),
     payload.priority,
     payload.change_reason ?? null,
   );
@@ -278,7 +299,7 @@ export function upsertImportedNode(
     createNode(db, payload);
     return 'created';
   }
-  const tagsStr = JSON.stringify(payload.tags ?? []);
+  const tagsStr = encodeTags(payload.tags);
   const changed =
     existing.title !== payload.title ||
     existing.content !== payload.content ||

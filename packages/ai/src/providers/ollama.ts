@@ -32,7 +32,8 @@ export class OllamaProvider implements AiProvider {
       }),
     });
     if (!res.ok) {
-      throw new Error(`ollama API error ${res.status}: ${await res.text()}`);
+      await res.text().catch(() => '');
+      throw new Error(`ollama API error ${res.status} ${res.statusText}`);
     }
     const body = (await res.json()) as OllamaGenerateResponse;
     if (!body.response) {
